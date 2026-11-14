@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package harbour.auth.v1;
+package harbour.types.v1;
 
 message SmsTwoFactorInfo {
   string phone_number = 1;

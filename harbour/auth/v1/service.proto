@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package harbour.auth.v1;
 
-import "harbour/auth/v1/two_factor.proto";
+import "harbour/types/v1/two_factor.proto";
 
 service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
@@ -49,10 +49,10 @@ message LogoutResponse {}
 
 message SubmitTwoFactorRequest {
   oneof method {
-    SMSCodeLogin sms = 1;
-    EmailCodeLogin email = 2;
-    AuthenticatorAppLogin totp = 3;
-    SingeUseCodeLogin single_use = 4;
+    harbour.types.v1.SMSCodeLogin sms = 1;
+    harbour.types.v1.EmailCodeLogin email = 2;
+    harbour.types.v1.AuthenticatorAppLogin totp = 3;
+    harbour.types.v1.SingeUseCodeLogin single_use = 4;
   }
 }
 
@@ -76,8 +76,8 @@ message SendEmailCodeResponse {}
 message GetTwoFactorRequest {}
 
 message GetTwoFactorResponse {
-  repeated SmsTwoFactorInfo sms = 1;
-  repeated EmailTwoFactorInfo email = 2;
+  repeated harbour.types.v1.SmsTwoFactorInfo sms = 1;
+  repeated harbour.types.v1.EmailTwoFactorInfo email = 2;
   bool authenticator_app = 3;
   bool single_use_code = 4;
 }
