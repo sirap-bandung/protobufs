@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package harbour.account.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/field_mask.proto";
+import "harbour/types/v1/user.proto";
+
+service AccountService {
+  rpc ViewAccount(ViewAccountRequest) returns (ViewAccountResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc UpdateAccount(UpdateAccountRequest) returns (UpdateAccountResponse) {}
+  rpc UpdateAccountPassword(UpdateAccountPasswordRequest) returns (UpdateAccountPasswordResponse) {}
+
+  rpc EnableEmailTwoFactor(EnableEmailTwoFactorRequest) returns (EnableEmailTwoFactorResponse) {}
+  rpc DisableEmailTwoFactor(DisableEmailTwoFactorRequest) returns (DisableEmailTwoFactorResponse) {}
+  rpc EnableTotpTwoFactor(EnableTotpTwoFactorRequest) returns (EnableTotpTwoFactorResponse) {}
+  rpc DisableTotpTwoFactor(DisableTotpTwoFactorRequest) returns (DisableTotpTwoFactorResponse) {}
+  rpc ViewBackupCodes(ViewBackupCodesRequest) returns (ViewBackupCodesResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+  rpc RefreshBackupCodes(RefreshBackupCodesRequest) returns (RefreshBackupCodesResponse) {}
+}
+
+message ViewAccountRequest {}
+
+message ViewAccountResponse {}
+
+message UpdateAccountRequest {
+  harbour.types.v1.User info = 1;
+  google.protobuf.FieldMask update_mask = 2 [(buf.validate.field).cel = {
+    id: "valid_field_mask"
+    message: "a field mask path must be one of "
+    expression: "this.paths.all(path, path in [''])"
+  }];
+}
+
+message UpdateAccountResponse {}
+
+message UpdateAccountPasswordRequest {
+  string password = 1 [(buf.validate.field).string = {
+    min_len: 15
+    max_len: 200
+  }];
+}
+
+message UpdateAccountPasswordResponse {}
+
+message EnableEmailTwoFactorRequest {}
+
+message EnableEmailTwoFactorResponse {}
+
+message DisableEmailTwoFactorRequest {}
+
+message DisableEmailTwoFactorResponse {}
+
+message EnableTotpTwoFactorRequest {}
+
+message EnableTotpTwoFactorResponse {}
+
+message DisableTotpTwoFactorRequest {}
+
+message DisableTotpTwoFactorResponse {}
+
+message ViewBackupCodesRequest {}
+
+message ViewBackupCodesResponse {}
+
+message RefreshBackupCodesRequest {}
+
+message RefreshBackupCodesResponse {}
